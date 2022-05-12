@@ -32,8 +32,8 @@ const mapDispatchToProps = (dispatch: redux.Dispatch<any>) => {
 
 function mapStateToProps(state: Store.SearchState, ownProps: OwnProps) {
     return {
-        top: state.parameters.searchParameters.top,
-        skip: state.parameters.searchParameters.skip,
+        top: +state.parameters.searchParameters.top,
+        skip: +state.parameters.searchParameters.skip,
         count: state.results.count,
         showPager: state.results.results.length > 0,
         css: ownProps.css

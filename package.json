@@ -1,10 +1,10 @@
 {
-  "name": "azsearch.js",
-  "version": "0.0.21",
+  "name": "azsearch.js-fork",
+  "version": "0.0.22",
   "description": "Automagical UI and react components for Azure Search using AzSearchStore",
   "repository": {
     "type": "git",
-    "url": "https://github.com/EvanBoyle/AzSearch.js.git"
+    "url": "https://github.com/sieem/AzSearch.js.git"
   },
   "main": "dist/AzSearch.bundle.js",
   "module": "dist/AzSearch.js",
@@ -17,7 +17,7 @@
     "start_server": "http-server",
     "tscompile": "tsc",
     "devbuild": "npm run compile && npm run devpack",
-    "devpack": "webpack -d",
+    "devpack": "webpack -d --watch",
     "prodpack": "webpack -p && copy AzSearch.css dist\\",
     "compile": "npm run lint && npm run tscompile",
     "pretest": "npm run lint",

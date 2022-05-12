@@ -1,4 +1,6 @@
-# AzSearch.js
+# AzSearch.js fork
+_Fork of [AzSearch.js](https://github.com/EvanBoyle/AzSearch.js.git)_
+
 Automagical UI and sample react controls for [Azure Search](https://docs.microsoft.com/en-us/azure/search/) using [AzSearchStore](https://github.com/EvanBoyle/AzSearchStore). Written in [TypeScript](https://www.typescriptlang.org/).
 
 [![Build Status](https://travis-ci.org/EvanBoyle/AzSearch.js.svg?branch=master)](https://travis-ci.org/EvanBoyle/AzSearch.js)

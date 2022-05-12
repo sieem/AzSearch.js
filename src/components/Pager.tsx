@@ -8,18 +8,19 @@ export type State = {};
 
 class Pager extends React.PureComponent<PropsType, State> {
     render() {
-        const { count, top, skip, showPager, pageUp, pageDown, loadPage } = this.props;
+        const { count, top, skip, showPager, loadPage } = this.props;
         let css = objAssign({}, defaultCss, this.props.css);
         const maxSkip = 100000;
         const maxPage = count > 0 ? Math.ceil(count / top) : Math.ceil(maxSkip / top) + 1;
         const activePage = skip / top + 1;
         const enablePrevious = activePage > 1;
         const enableNext = activePage < maxPage;
+
         let pagerButtons = [];
         // previous button
         let previousCss = enablePrevious ? css.pager__pageItem : css.pager__pageItemDisabled;
         let onPreviousClick = () => {
-            return enablePrevious && pageDown();
+            return enablePrevious && loadPage(activePage - 1);
         };
         pagerButtons.push(
             <li className={previousCss}>
@@ -30,7 +31,7 @@ class Pager extends React.PureComponent<PropsType, State> {
             </li>
         );
 
-        let getCssClass = (page: number, isActive: boolean, isDisabled: boolean) => {
+        let getCssClass = (isActive: boolean, isDisabled: boolean) => {
             let cssClass = isActive ? css.pager__pageItemActive : css.pager_pageItem;
             cssClass = isDisabled ? css.pager__pageItemDisabled : cssClass;
             return cssClass;
@@ -38,7 +39,7 @@ class Pager extends React.PureComponent<PropsType, State> {
 
         let generateButton = (page: number, isActive: boolean, isDisabled: boolean) => {
             let srItem = isActive ? <span className={css.screenReaderOnly}>(current)</span> : "";
-            let cssClass = getCssClass(page, isActive, isDisabled);
+            let cssClass = getCssClass(isActive, isDisabled);
             let onPageClick = () => {
                 return loadPage(page);
             };
@@ -57,16 +58,18 @@ class Pager extends React.PureComponent<PropsType, State> {
             );
             pagerButtons.push(generateButton(maxPage, false, true));
         };
-        // buttons will loos like << 1 2 3 ... max >>
+        // buttons will looks like << 1 2 3 4 5 ... max >>
         if (activePage < 4) {
             pagerButtons.push(generateButton(1, activePage === 1, false));
             2 <= maxPage ? pagerButtons.push(generateButton(2, activePage === 2, false)) : 0;
             3 <= maxPage ? pagerButtons.push(generateButton(3, activePage === 3, false)) : 0;
+            4 <= maxPage ? pagerButtons.push(generateButton(4, activePage === 4, false)) : 0;
+            5 <= maxPage ? pagerButtons.push(generateButton(5, activePage === 5, false)) : 0;
             if (maxPage > 3) {
                 addElipsesAndMaxPage(pagerButtons);
             }
         }
-        // else << 1 ... 4 5 ... pageMax >>
+        // else << 1 ... 3 4 5 ... pageMax >>
         else {
             pagerButtons.push(generateButton(1, false, false));
             pagerButtons.push(
@@ -74,8 +77,11 @@ class Pager extends React.PureComponent<PropsType, State> {
                     <a className={css.pager__pageLink} >...</a>
                 </li>
             );
+            if (enablePrevious) {
+                pagerButtons.push(generateButton(activePage - 1, false, false));
+            }
             pagerButtons.push(generateButton(activePage, true, false));
-            if (activePage < maxPage) {
+            if (enableNext) {
                 pagerButtons.push(generateButton(activePage + 1, false, false));
                 addElipsesAndMaxPage(pagerButtons);
             }
@@ -84,7 +90,7 @@ class Pager extends React.PureComponent<PropsType, State> {
         // next button
         let nextCss = enableNext ? css.pager__pageItem : css.pager__pageItemDisabled;
         let onNextClick = () => {
-            return enableNext && pageUp();
+            return enableNext && loadPage(activePage + 1);
         };
         pagerButtons.push(
             <li className={nextCss}>
